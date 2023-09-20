@@ -151,8 +151,6 @@ function App() {
         setMode('CREATE')
       }
     }>Create</a>
-  kkkkkksdsadfsf
-    
     </div>
     
   );
