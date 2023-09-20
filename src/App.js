@@ -118,8 +118,10 @@ function App() {
     content = <Create onCreate= {
       function(_title,_body){
         const newTopic={id : nextId, title:_title, body:_body}
+        //이러기 위해서는 nextId 값이 미리 증가되어 있어야 함.
         const newTopics=[...topics]
         newTopics.push(newTopic);
+        //배열이나 객체의 경우 useState 그대로 못쓴다. 원래의 객체를 새로 복사하고, 복사한 것을 수정하고, 수정한 것을 set함수에 넣어야함.
         setTopics(newTopics);
         setMode('READ');
         setId(nextId);
