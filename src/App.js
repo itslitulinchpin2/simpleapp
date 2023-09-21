@@ -142,21 +142,36 @@ function App() {
   } else if (mode === 'READ'){
     let title, body = null;
     
-    // for(let i=0;i<topics.length;i++){  
-    //   if(topics[i].id===id){
-    //     title=topics[i].title
-    //     body=topics[i].body
-    //   }
-    // }
-    title = topics[id-1].title
-    body = topics[id-1].body
+    for(let i=0;i<topics.length;i++){  
+      if(topics[i].id===id){
+        title=topics[i].title
+        body=topics[i].body
+      }
+    }
+    
     content = <Article title= {title} body={body}></Article>
-    contextControl=<li><a href = {"/update"+id} onClick={
+    contextControl=
+    <>
+    <li><a href = {"/update"+id} onClick={
       function(event){
         event.preventDefault();
         setMode('UPDATE');
       }
     }>Update</a></li>
+    <li><input type="button" value="Delete" onClick={
+      function(){
+        const newTopics=[]
+        for(let i=0;i<topics.length;i++){
+          if(topics[i].id!=id){
+            newTopics.push(topics[i])
+          }
+        }
+        //for문을 통해 삭제하지 않을 토픽들만 담은 새 배열을 담는다.
+        setTopics(newTopics)
+        setMode('WELCOME')
+      }
+    }></input></li>
+    </>
   } else if (mode ==='CREATE'){
     content = <Create onCreate= {
       function(_title,_body){
