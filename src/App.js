@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import {useState} from 'react';
 
@@ -162,7 +161,7 @@ function App() {
       function(){
         const newTopics=[]
         for(let i=0;i<topics.length;i++){
-          if(topics[i].id!=id){
+          if(topics[i].id!==id){
             newTopics.push(topics[i])
           }
         }
