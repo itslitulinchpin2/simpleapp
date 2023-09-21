@@ -78,6 +78,42 @@ function Create(props){
   )
 }
 
+function Update(props){
+  const [title,setTitle]=useState(props.title)
+  const [body,setBody]=useState(props.body)
+  return(
+    <article>
+      <h2>Update</h2>
+      <form onSubmit={
+        function(event){
+          event.preventDefault();
+          const title=event.target.title.value;
+          const body= event.target.body.value;
+          //event.target은 여기서 이벤트를 발생시킨 form태그이다.
+          props.onUpdate(title,body)
+        
+        }
+        //submit하면 자동으로 페이지가 리로드되므로, 막아야한다.
+      }>
+        <p><input type="text" name="title" placeholder="title" value={title} onChange={
+          function(event){
+            //console.log(event.target.value);
+            //입력하는 값을 바꾼 것을 얻고싶을 때 !!
+            setTitle(event.target.value)
+          }
+        }></input></p>
+        <p><textarea name="body" placeholder="body" value={body} onChange={
+          function(event){
+            setBody(event.target.value)
+          }
+        }></textarea></p>
+        
+        <p><input type="submit" value="update"></input></p>
+      </form>
+    </article>
+
+  )
+}
 
 function App() {
   const [topics,setTopics] =useState( [
@@ -99,6 +135,7 @@ function App() {
   const [id,setId]=useState(null);
   const [nextId,setNextId]=useState(4);
   let content = null;
+  let contextControl=null;
   
   if (mode === 'WELCOME'){
     content = <Article title="WELCOME" body="Hello, World for introducing!"></Article>
@@ -114,6 +151,12 @@ function App() {
     title = topics[id-1].title
     body = topics[id-1].body
     content = <Article title= {title} body={body}></Article>
+    contextControl=<li><a href = {"/update"+id} onClick={
+      function(event){
+        event.preventDefault();
+        setMode('UPDATE');
+      }
+    }>Update</a></li>
   } else if (mode ==='CREATE'){
     content = <Create onCreate= {
       function(_title,_body){
@@ -128,6 +171,33 @@ function App() {
         setNextId(nextId+1);
       }
     }></Create>
+  } else if (mode==='UPDATE'){
+    let title, body = null;
+    
+    for(let i=0;i<topics.length;i++){  
+      if(topics[i].id===id){
+        title=topics[i].title
+        body=topics[i].body
+      }
+    }
+    //해당 id를 바탕으로 title과 body의 값을 알아옴
+
+    content = <Update title={title} body={body} onUpdate={
+      function(title,body){
+        const updatedTopic={id:id,title:title, body:body}
+        const newTopics=[...topics]
+        for (let i=0;i<newTopics.length;i++){
+          if (newTopics[i].id===id){
+            newTopics[i]=updatedTopic;
+            break;
+          }
+        }
+        setTopics(newTopics)
+        setMode('READ');
+      
+      }
+    }></Update>
+
   }
   return (
     <div>
@@ -147,13 +217,16 @@ function App() {
       }></Nav>
 
     {content}
-    <a href = "/create" onClick = {
-      function(event){
-        event.preventDefault();
-        setMode('CREATE')
-      }
-    }>Create</a>
-    
+    <ul>
+      <li>
+      <a href = "/create" onClick = {
+        function(event){
+          event.preventDefault();
+          setMode('CREATE')
+        }
+      }>Create</a></li>
+      {contextControl}
+    </ul>
     </div>
     
   );
