@@ -68,8 +68,8 @@ function Create(props){
         }
         //submit하면 자동으로 페이지가 리로드되므로, 막아야한다.
       }>
-        <p><input type="text" name="title" placeholder="title"></input></p>
-        <p><textarea name="body" placeholder="body"></textarea></p>
+        <p><input type="text" name="title" placeholder="작가명"></input></p>
+        <p><textarea name="body" placeholder="도서명"></textarea></p>
         <p><input type="submit" value="create"></input></p>
       </form>
     </article>
@@ -116,9 +116,9 @@ function Update(props){
 
 function App() {
   const [topics,setTopics] =useState( [
-    {id:1, title:"html", body:"html is ..." },
-    {id:2, title:"css", body:"css is ..." },
-    {id:3, title:"javascript", body:"javascript is ..." }
+    {id:1, title:"헤르만 헤세", body:"데미안" },
+    {id:2, title:"윌리엄 포크너", body:"내가 죽어 누워 있을때" },
+    {id:3, title:"안톤 체호프", body:"바냐 아저씨" }
   ])
   //topics는 객체들을 담은 배열이다.
 
@@ -137,7 +137,7 @@ function App() {
   let contextControl=null;
   
   if (mode === 'WELCOME'){
-    content = <Article title="WELCOME" body="Hello, World for introducing!"></Article>
+    content = <Article title="이승민이 사랑한 작가를 소개합니다." body="작가명 클릭시 대표작을 열람할 수 있습니다."></Article>
   } else if (mode === 'READ'){
     let title, body = null;
     
@@ -156,8 +156,8 @@ function App() {
         event.preventDefault();
         setMode('UPDATE');
       }
-    }>Update</a></li>
-    <li><input type="button" value="Delete" onClick={
+    }>목록수정</a></li>
+    <li><input type="button" value="목록삭제" onClick={
       function(){
         const newTopics=[]
         for(let i=0;i<topics.length;i++){
@@ -215,7 +215,7 @@ function App() {
   }
   return (
     <div>
-      <Header title="WEB" onChangeMode={
+      <Header title="The Great Writers" onChangeMode={
         function(){
           //alert('Header')
           setMode('WELCOME')
@@ -238,7 +238,7 @@ function App() {
           event.preventDefault();
           setMode('CREATE')
         }
-      }>Create</a></li>
+      }>목록추가</a></li>
       {contextControl}
     </ul>
     </div>
